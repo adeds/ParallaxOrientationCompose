@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
@@ -22,17 +21,18 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
+import id.sydev.parallaxeffectorientation.model.City
 import id.sydev.parallaxeffectorientation.model.SensorMotion
 import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MainView(motion: SensorMotion) {
+fun MainView(motion: SensorMotion, cities: Array<City>) {
     Column(Modifier.fillMaxSize()) {
         val pagerState = rememberPagerState()
 
         HorizontalPager(
-            count = 3,
+            count = cities.size,
             state = pagerState,
             // Add 32.dp horizontal padding to 'center' the pages
             contentPadding = PaddingValues(horizontal = 32.dp),
@@ -69,7 +69,7 @@ fun MainView(motion: SensorMotion) {
             ) {
                 Image(
                     modifier = Modifier.fillMaxSize(),
-                    painter = painterResource(R.drawable.rio_bg),
+                    painter = painterResource(cities[page].background),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     alignment = BiasAlignment(
@@ -80,7 +80,7 @@ fun MainView(motion: SensorMotion) {
 
                 Image(
                     modifier = Modifier.fillMaxSize(),
-                    painter = painterResource(R.drawable.rio),
+                    painter = painterResource(cities[page].foreGround),
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
                     alignment = Alignment.BottomCenter
