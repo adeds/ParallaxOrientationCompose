@@ -37,6 +37,7 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerVersion '1.4.30'
     }
     packagingOptions {
         resources {
@@ -59,4 +60,8 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+
+    implementation "androidx.compose.ui:ui-util:$compose_version"
+    implementation "com.google.accompanist:accompanist-pager:0.24.13-rc"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.24.13-rc"
 }
