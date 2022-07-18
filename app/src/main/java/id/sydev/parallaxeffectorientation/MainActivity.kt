@@ -15,7 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import id.sydev.parallaxeffectorientation.model.SensorMotion
-import id.sydev.parallaxeffectorientation.model.collectCities
+import id.sydev.parallaxeffectorientation.model.collectCountries
 import id.sydev.parallaxeffectorientation.ui.theme.ParallaxEffectOrientationTheme
 
 class MainActivity : ComponentActivity(), SensorEventListener {
@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainView(motion, collectCities())
+                    MainView(motion, collectCountries())
                 }
             }
         }
