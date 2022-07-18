@@ -6,18 +6,25 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -31,14 +38,14 @@ import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MainView(motion: SensorMotion, cities: Array<Country>) {
-    val minZoom = 1.2f
+fun MainView(motion: SensorMotion, countries: Array<Country>) {
+    val minZoom = 1.1f
     val maxZoom = 1.5f
     Column(Modifier.fillMaxSize()) {
         val pagerState = rememberPagerState()
         val scale = remember { mutableStateOf(1f) }
         HorizontalPager(
-            count = cities.size,
+            count = countries.size,
             state = pagerState,
             // Add 32.dp horizontal padding to 'center' the pages
             contentPadding = PaddingValues(horizontal = 32.dp),
@@ -47,6 +54,7 @@ fun MainView(motion: SensorMotion, cities: Array<Country>) {
                 .weight(1f)
                 .fillMaxWidth(),
         ) { page ->
+            val country = countries[page]
             Card(
                 modifier = Modifier
                     .graphicsLayer {
@@ -85,11 +93,11 @@ fun MainView(motion: SensorMotion, cities: Array<Country>) {
                             scaleY = maxOf(minZoom, minOf(maxZoom, scale.value)),
                             rotationZ = 1f
                         ),
-                    painter = painterResource(cities[page].background),
+                    painter = painterResource(country.background),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     alignment = BiasAlignment(
-                        horizontalBias = motion.background*scale.value,
+                        horizontalBias = motion.background * scale.value,
                         verticalBias = 0f
                     )
                 )
@@ -101,14 +109,17 @@ fun MainView(motion: SensorMotion, cities: Array<Country>) {
                             scaleY = maxOf(minZoom, minOf(maxZoom, scale.value)),
                             rotationZ = 1f
                         ).fillMaxSize(),
-                    painter = painterResource(cities[page].foreGround),
+                    painter = painterResource(country.foreGround),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     alignment = BiasAlignment(
-                        horizontalBias = motion.foreground*scale.value,
+                        horizontalBias = motion.foreground * scale.value,
                         verticalBias = 1f
                     )
                 )
+
+                titleView(country.name)
+
             }
 
         }
@@ -120,4 +131,31 @@ fun MainView(motion: SensorMotion, cities: Array<Country>) {
                 .padding(16.dp),
         )
     }
+}
+
+@Composable
+private fun titleView(countryName: String) {
+    // background shadow
+    Text(
+        modifier = Modifier.fillMaxWidth().padding(16.dp).offset(
+            x = 2.dp,
+            y = 2.dp
+        ).alpha(0.75f),
+        text = countryName,
+        style = MaterialTheme.typography.h2,
+        textAlign = TextAlign.End,
+        fontStyle = FontStyle.Italic,
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colors.onPrimary
+    )
+    //foreground text
+    Text(
+        modifier = Modifier.fillMaxWidth().padding(16.dp),
+        text = countryName,
+        style = MaterialTheme.typography.h2,
+        textAlign = TextAlign.End,
+        fontStyle = FontStyle.Italic,
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colors.onSurface
+    )
 }
